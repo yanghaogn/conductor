@@ -46,7 +46,6 @@ import java.util.stream.Collectors;
  * LinkedList of {@link Task} beginning with a {@link TaskType#TASK_TYPE_FORK}, followed by the user defined dynamic tasks
  * and a {@link TaskType#JOIN} at the end
  */
-@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @Component
 public class ForkJoinDynamicTaskMapper implements TaskMapper {
 

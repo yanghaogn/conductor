@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Netflix, Inc.
+ * Copyright 2021 Netflix, Inc.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
  * the License. You may obtain a copy of the License at
@@ -13,8 +13,13 @@
 package com.netflix.conductor.test.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.netflix.conductor.common.metadata.tasks.TaskType;
+import com.netflix.conductor.common.metadata.workflow.SubWorkflowParams;
+import com.netflix.conductor.common.metadata.workflow.WorkflowDef;
+import com.netflix.conductor.common.metadata.workflow.WorkflowTask;
 import com.netflix.conductor.common.run.ExternalStorageLocation;
 import com.netflix.conductor.common.utils.ExternalPayloadStorage;
+import java.util.Collections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +46,7 @@ public class MockExternalPayloadStorage implements ExternalPayloadStorage {
     public static final String INITIAL_WORKFLOW_INPUT_PATH = "workflow/input";
     public static final String WORKFLOW_OUTPUT_PATH = "workflow/output";
     public static final String TASK_OUTPUT_PATH = "task/output";
+    public static final String DYNAMIC_FORK_LARGE_PAYLOAD_PATH = "dynamic_fork_large_payload";
 
     public static final String TEMP_FILE_PATH = "/input.json";
 
@@ -125,10 +131,53 @@ public class MockExternalPayloadStorage implements ExternalPayloadStorage {
                 case WORKFLOW_OUTPUT_PATH:
                     InputStream ipStream = MockExternalPayloadStorage.class.getResourceAsStream(TEMP_FILE_PATH);
                     return objectMapper.readValue(ipStream, Map.class);
+                case DYNAMIC_FORK_LARGE_PAYLOAD_PATH:
+                    return curateDynamicForkLargePayload();
             }
         } catch (IOException e) {
             // just handle this exception here and return empty map so that test will fail in case this exception is thrown
         }
         return stringObjectMap;
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<String, Object> curateDynamicForkLargePayload() {
+        Map<String, Object> dynamicForkLargePayload = new HashMap<>();
+        try {
+            InputStream inputStream = MockExternalPayloadStorage.class.getResourceAsStream("/output.json");
+            Map<String, Object> largePayload = objectMapper.readValue(inputStream, Map.class);
+
+            WorkflowTask simpleWorkflowTask = new WorkflowTask();
+            simpleWorkflowTask.setName("integration_task_10");
+            simpleWorkflowTask.setTaskReferenceName("t10");
+            simpleWorkflowTask.setType(TaskType.SIMPLE.name());
+            simpleWorkflowTask.setInputParameters(Collections.singletonMap("p1", "${workflow.input.imageType}"));
+
+            WorkflowDef subWorkflowDef = new WorkflowDef();
+            subWorkflowDef.setName("one_task_workflow");
+            subWorkflowDef.setVersion(1);
+            subWorkflowDef.setTasks(Collections.singletonList(simpleWorkflowTask));
+
+            SubWorkflowParams subWorkflowParams = new SubWorkflowParams();
+            subWorkflowParams.setName("one_task_workflow");
+            subWorkflowParams.setVersion(1);
+            subWorkflowParams.setWorkflowDef(subWorkflowDef);
+
+            WorkflowTask subWorkflowTask = new WorkflowTask();
+            subWorkflowTask.setName("large_payload_subworkflow");
+            subWorkflowTask.setType(TaskType.SUB_WORKFLOW.name());
+            subWorkflowTask.setTaskReferenceName("large_payload_subworkflow");
+            subWorkflowTask.setInputParameters(largePayload);
+            subWorkflowTask.setSubWorkflowParam(subWorkflowParams);
+
+            dynamicForkLargePayload.put("dynamicTasks", Collections.singletonList(subWorkflowTask));
+            dynamicForkLargePayload
+                .put("dynamicTasksInput", Collections.singletonMap("large_payload_subworkflow", largePayload));
+
+            return dynamicForkLargePayload;
+        } catch (IOException e) {
+            // just handle this exception here and return empty map so that test will fail in case this exception is thrown
+        }
+        return dynamicForkLargePayload;
     }
 }
