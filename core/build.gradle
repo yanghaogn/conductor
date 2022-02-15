@@ -15,6 +15,7 @@ apply plugin: 'groovy'
 dependencies {
     implementation project(':conductor-common')
     compileOnly 'org.springframework.boot:spring-boot-starter'
+    compileOnly 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.springframework.boot:spring-boot-starter-validation'
 
     implementation "com.fasterxml.jackson.core:jackson-annotations"
@@ -34,6 +35,9 @@ dependencies {
 
     implementation "io.reactivex:rxjava:${revRxJava}"
 
+//    implementation "javax.ws.rs:jsr311-api:${revJsr311Api}"
+
+    // SBMTODO: remove guava dep
     implementation "com.google.guava:guava:${revGuava}"
 
     implementation "com.netflix.spectator:spectator-api:${revSpectator}"
@@ -48,12 +52,16 @@ dependencies {
     // Only add it as a test dependency. The actual jaxb runtime provider is provided when building the server.
     testImplementation "org.glassfish.jaxb:jaxb-runtime:${revJAXB}"
 
+    testImplementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-validation'
     testImplementation project(':conductor-common').sourceSets.test.output
 
     testImplementation "org.codehaus.groovy:groovy-all:${revGroovy}"
     testImplementation "org.spockframework:spock-core:${revSpock}"
     testImplementation "org.spockframework:spock-spring:${revSpock}"
+
+    testImplementation "org.testcontainers:mockserver:${revTestContainer}"
+    testImplementation "org.mock-server:mockserver-client-java:${revMockServerClient}"
 }
 
 test {

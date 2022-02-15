@@ -37,7 +37,7 @@ import com.netflix.conductor.core.listener.WorkflowStatusListener;
 import com.netflix.conductor.core.listener.WorkflowStatusListenerStub;
 import com.netflix.conductor.core.storage.DummyPayloadStorage;
 import com.netflix.conductor.core.sync.Lock;
-import com.netflix.conductor.core.sync.NoopLock;
+import com.netflix.conductor.core.sync.noop.NoopLock;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 

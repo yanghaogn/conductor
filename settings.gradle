@@ -50,8 +50,11 @@ include 'es7-persistence'
 include 'redis-lock'
 include 'zookeeper-lock'
 
+include 'awss3-storage'
 include 'azureblob-storage'
 include 'postgres-external-storage'
+
+include 'awssqs-event-queue'
 
 include 'redis-concurrency-limit'
 

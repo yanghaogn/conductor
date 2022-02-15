@@ -50,7 +50,7 @@
       "name": "conductor.event-queues.sqs.enabled",
       "type": "java.lang.Boolean",
       "description": "Enable the use of AWS SQS implementation to provide queues for consuming events.",
-      "sourceType": "com.netflix.conductor.contribs.queue.sqs.config.SQSEventQueueConfiguration"
+      "sourceType": "com.netflix.conductor.sqs.config.SQSEventQueueConfiguration"
     },
     {
       "name": "conductor.event-queues.amqp.enabled",
