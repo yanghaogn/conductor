@@ -13,6 +13,7 @@
 package com.netflix.conductor.test.integration.grpc.mysql;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -35,6 +36,7 @@ import com.netflix.conductor.test.integration.grpc.AbstractGrpcEndToEndTest;
             "spring.datasource.hikari.maximum-pool-size=8",
             "spring.datasource.hikari.minimum-idle=300000"
         })
+@Ignore
 public class MySQLGrpcEndToEndTest extends AbstractGrpcEndToEndTest {
 
     @Before
