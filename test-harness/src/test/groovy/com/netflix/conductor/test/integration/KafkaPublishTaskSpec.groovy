@@ -12,6 +12,7 @@
  */
 package com.netflix.conductor.test.integration
 
+import org.junit.Ignore
 import org.springframework.beans.factory.annotation.Autowired
 
 import com.netflix.conductor.common.metadata.tasks.TaskDef
@@ -25,6 +26,7 @@ import com.netflix.conductor.test.base.AbstractSpecification
 import com.fasterxml.jackson.databind.ObjectMapper
 import spock.lang.Shared
 
+@Ignore
 class KafkaPublishTaskSpec extends AbstractSpecification {
 
     @Autowired

@@ -41,18 +41,12 @@ include 'client-spring'
 
 include 'cassandra-persistence'
 include 'redis-persistence'
-include 'mysql-persistence'
-include 'postgres-persistence'
 
 include 'es6-persistence'
-include 'es7-persistence'
 
 include 'redis-lock'
-include 'zookeeper-lock'
 
 include 'awss3-storage'
-include 'azureblob-storage'
-include 'postgres-external-storage'
 
 include 'awssqs-event-queue'
 

@@ -12,6 +12,8 @@
  */
 package com.netflix.conductor.test.integration
 
+import org.junit.Ignore
+
 import com.netflix.conductor.common.metadata.tasks.Task
 import com.netflix.conductor.common.metadata.workflow.RerunWorkflowRequest
 import com.netflix.conductor.common.run.Workflow
@@ -19,6 +21,7 @@ import com.netflix.conductor.test.base.AbstractSpecification
 
 import spock.lang.Shared
 
+@Ignore
 class JsonJQTransformSpec extends AbstractSpecification {
 
     @Shared
