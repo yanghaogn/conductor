@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,7 @@ import static org.junit.Assert.assertEquals;
             "conductor.workflow-status-listener.queue-publisher.finalizeQueue=final"
         })
 @TestPropertySource(locations = "classpath:application-integrationtest.properties")
+@Ignore
 public class WorkflowStatusPublisherIntegrationTest {
 
     private final String CALLBACK_QUEUE = "dummy";
